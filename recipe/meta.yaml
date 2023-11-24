@@ -10,31 +10,43 @@ source:
   sha256: bfbb479c53d0a696ea7402601f4e693c97b0367837c8898bc6471adfca37a6bd
 
 build:
+  skip: True  # [py<38]
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
 
 requirements:
   host:
-    - python >=3.8
+    - python
     - pip
+    - setuptools
+    - wheel
   run:
-    - python >=3.8
+    - python
 
 test:
+  source_files:
+    - test
   imports:
     - toposort
   commands:
     - pip check
+    - python -m test.test_toposort
   requires:
     - pip
+    - pytest 
 
 about:
   home: https://gitlab.com/ericvsmith/toposort
   license: Apache-2.0
   license_file: LICENSE.txt
   license_family: APACHE
+  dev_url: https://gitlab.com/ericvsmith/toposort
+  doc_url: https://gitlab.com/ericvsmith/toposort
   summary: Implements a topological sort algorithm
+  description: |
+    In computer science, a topological sort (sometimes abbreviated topsort or toposort) or topological 
+    ordering of a directed graph is a linear ordering of its vertices such that for every directed 
+    edge uv from vertex u to vertex v, u comes before v in the ordering.
 
 extra:
   recipe-maintainers:
